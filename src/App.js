@@ -19,7 +19,8 @@ type NetworkState = 'unknown' | 'working' | 'success' | 'failure';
 type Resolution = { url: string } | { urls: Array<string> };
 
 const PRODUCTION_ORIGIN = 'https://traceurl.herokuapp.com';
-const DEVELOPMENT_ORIGIN = 'http://localhost:4000';
+const DEVELOPMENT_ORIGIN =
+  process.env.REACT_APP_API_ORIGIN || 'http://localhost:4000';
 const RESOLVE_ENDPOINT = '/resolve.json';
 
 function App() {
