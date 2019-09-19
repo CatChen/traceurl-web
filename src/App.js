@@ -110,7 +110,12 @@ function App() {
                     <Typography gutterBottom variant="h5" component="h2">
                       Resolved URL
                     </Typography>
-                    <Box fontFamily="Monospace">{resolution.url}</Box>
+                    <Box
+                      fontFamily="Monospace"
+                      style={{ overflowWrap: 'break-word' }}
+                    >
+                      {resolution.url}
+                    </Box>
                   </CardContent>
                   <CardActions>
                     <Button
