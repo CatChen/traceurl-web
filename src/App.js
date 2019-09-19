@@ -24,8 +24,8 @@ const RESOLVE_ENDPOINT = '/resolve.json';
 
 function App() {
   const [network, setNetwork] = useState<NetworkState>('unknown');
-  const [url, setURL] = useState<?string>(
-    new URL(window.location.href).searchParams.get('url'),
+  const [url, setURL] = useState<string>(
+    new URL(window.location.href).searchParams.get('url') || '',
   );
   const [resolution, setResolution] = useState<?Resolution>(null);
 
@@ -45,7 +45,16 @@ function App() {
           <form
             onSubmit={async (event) => {
               event.preventDefault();
-              // @todo update query string to the user input URL
+
+              const navigationURL = new URL(window.location.href);
+              navigationURL.searchParams.delete('url');
+              navigationURL.searchParams.append('url', url);
+              window.history.pushState(
+                { url },
+                document.title,
+                navigationURL.toString(),
+              );
+
               setNetwork('working');
               try {
                 // @todo make API configurable in development
@@ -106,7 +115,9 @@ function App() {
                       color="primary"
                     >
                       Open
-                      {/*@todo add spacing between text and icon*/}
+                      {/*
+                        @todo add spacing between text and icon
+                      */}
                       <OpenInNew />
                     </Button>
                   </CardActions>
