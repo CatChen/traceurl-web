@@ -30,6 +30,10 @@ function App() {
   );
   const [resolution, setResolution] = useState<?Resolution>(null);
 
+  window.addEventListener('popstate', (event) => {
+    // @todo restore component state from history state
+  });
+
   return (
     <div className="App">
       <CssBaseline>
