@@ -24,7 +24,7 @@ const DEVELOPMENT_ORIGIN =
 const RESOLVE_ENDPOINT = '/resolve.json';
 
 function App() {
-  const [network, setNetwork] = useState<NetworkState>('unknown');
+  const [network, setNetwork] = useState<NetworkState>('unknown'); // @todo show network indicator when fetching
   const [url, setURL] = useState<string>(
     new URL(window.location.href).searchParams.get('url') || '',
   );
