@@ -71,9 +71,15 @@ function App() {
                 api.searchParams.append('url', url);
 
                 const response = await fetch(api);
-                const json = await response.json();
-                setResolution(json);
+                const resolution = await response.json();
+                setResolution(resolution);
                 setNetwork('success');
+
+                window.history.replaceState(
+                  { url, resolution },
+                  document.title,
+                  navigationURL.toString(),
+                );
               } catch {
                 setNetwork('failure');
               }
