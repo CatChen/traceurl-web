@@ -5,18 +5,24 @@ import './App.css';
 import {
   Box,
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
   Container,
   CssBaseline,
   TextField,
   Typography,
 } from '@material-ui/core';
+import OpenInNew from '@material-ui/icons/OpenInNew';
 
 type NetworkState = 'unknown' | 'working' | 'success' | 'failure';
+type Resolution = { url: string } | { urls: Array<string> };
 
 function App() {
   const [network, setNetwork] = useState<NetworkState>('unknown');
   const [url, setURL] = useState<string>(''); // @todo use URL from query string
-  const [resolution, setResolution] = useState(null);
+  const [resolution, setResolution] = useState<?Resolution>(null);
 
   return (
     <div className="App">
@@ -72,6 +78,32 @@ function App() {
               Trace
             </Button>
           </form>
+          {resolution ? (
+            typeof resolution.url === 'string' ? (
+              <Box my={2}>
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      Resolved URL
+                    </Typography>
+                    <Box fontFamily="Monospace">{resolution.url}</Box>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      href={resolution.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      color="primary"
+                    >
+                      Open
+                      {/*@todo add spacing between text and icon*/}
+                      <OpenInNew />
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Box>
+            ) : null
+          ) : null}
         </Container>
       </CssBaseline>
     </div>
