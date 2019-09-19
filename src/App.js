@@ -62,7 +62,6 @@ function App() {
 
               setNetwork('working');
               try {
-                // @todo make API configurable in development
                 const origin =
                   process.env.NODE_ENV === 'production'
                     ? PRODUCTION_ORIGIN
