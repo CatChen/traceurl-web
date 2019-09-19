@@ -19,6 +19,10 @@ import OpenInNew from '@material-ui/icons/OpenInNew';
 type NetworkState = 'unknown' | 'working' | 'success' | 'failure';
 type Resolution = { url: string } | { urls: Array<string> };
 
+const PRODUCTION_ORIGIN = 'https://traceurl.herokuapp.com';
+const DEVELOPMENT_ORIGIN = 'http://localhost:4000';
+const RESOLVE_ENDPOINT = '/resolve.json';
+
 function App() {
   const [network, setNetwork] = useState<NetworkState>('unknown');
   const [url, setURL] = useState<string>(''); // @todo use URL from query string
@@ -43,11 +47,12 @@ function App() {
               // @todo update query string to the user input URL
               setNetwork('working');
               try {
-                // @todo make API production
                 // @todo make API configurable in development
-                const api = `http://localhost:4000/resolve.json?url=${encodeURIComponent(
-                  url,
-                )}`;
+                const origin = (process.env.NODE_ENV === 'production') ? PRODUCTION_ORIGIN : DEVELOPMENT_ORIGIN;
+                const api = new URL(origin);
+                api.pathname = RESOLVE_ENDPOINT;
+                api.searchParams.append('url', url);
+
                 const response = await fetch(api);
                 const json = await response.json();
                 setResolution(json);
