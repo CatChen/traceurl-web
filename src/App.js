@@ -24,7 +24,9 @@ const RESOLVE_ENDPOINT = '/resolve.json';
 
 function App() {
   const [network, setNetwork] = useState<NetworkState>('unknown');
-  const [url, setURL] = useState<string>(''); // @todo use URL from query string
+  const [url, setURL] = useState<?string>(
+    new URL(window.location.href).searchParams.get('url'),
+  );
   const [resolution, setResolution] = useState<?Resolution>(null);
 
   return (
@@ -47,7 +49,10 @@ function App() {
               setNetwork('working');
               try {
                 // @todo make API configurable in development
-                const origin = (process.env.NODE_ENV === 'production') ? PRODUCTION_ORIGIN : DEVELOPMENT_ORIGIN;
+                const origin =
+                  process.env.NODE_ENV === 'production'
+                    ? PRODUCTION_ORIGIN
+                    : DEVELOPMENT_ORIGIN;
                 const api = new URL(origin);
                 api.pathname = RESOLVE_ENDPOINT;
                 api.searchParams.append('url', url);
@@ -63,6 +68,7 @@ function App() {
           >
             <TextField
               autoFocus={true}
+              defaultValue={url}
               fullWidth={true}
               label="URL"
               name="url"
