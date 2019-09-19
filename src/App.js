@@ -31,7 +31,15 @@ function App() {
   const [resolution, setResolution] = useState<?Resolution>(null);
 
   window.addEventListener('popstate', (event) => {
-    // @todo restore component state from history state
+    if (event.state) {
+      setURL(event.state.url);
+      setResolution(event.state.resolution);
+      // @todo handle page navigation before fetch completion
+    } else {
+      // null state of the full page load
+      setURL('');
+      setResolution(null);
+    }
   });
 
   return (
