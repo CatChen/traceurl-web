@@ -1,4 +1,6 @@
-import React from 'react';
+// @flow
+
+import React, { useState } from 'react';
 import './App.css';
 import {
   Box,
@@ -9,7 +11,13 @@ import {
   Typography,
 } from '@material-ui/core';
 
+type NetworkState = 'unknown' | 'working' | 'success' | 'failure';
+
 function App() {
+  const [network, setNetwork] = useState<NetworkState>('unknown');
+  const [url, setURL] = useState<string>(''); // @todo use URL from query string
+  const [resolution, setResolution] = useState(null);
+
   return (
     <div className="App">
       <CssBaseline>
@@ -20,10 +28,29 @@ function App() {
             </Typography>
           </Box>
           <Typography fontWeight="fontWeightLight">
-            This tool helps you expand shortened URL into original UR or trace
+            This tool helps you expand shortened URL into original URL or trace
             any URL with redirections towards the destionation.
           </Typography>
-          <form>
+          <form
+            onSubmit={async (event) => {
+              event.preventDefault();
+              // @todo update query string to the user input URL
+              setNetwork('working');
+              try {
+                // @todo make API production
+                // @todo make API configurable in development
+                const api = `http://localhost:4000/resolve.json?url=${encodeURIComponent(
+                  url,
+                )}`;
+                const response = await fetch(api);
+                const json = await response.json();
+                setResolution(json);
+                setNetwork('success');
+              } catch {
+                setNetwork('failure');
+              }
+            }}
+          >
             <TextField
               autoFocus={true}
               fullWidth={true}
@@ -32,6 +59,9 @@ function App() {
               placeholder="Any URL that redirects"
               variant="filled"
               margin="normal"
+              onChange={(event) => {
+                setURL(event.target.value);
+              }}
             />
             <Button
               type="submit"
