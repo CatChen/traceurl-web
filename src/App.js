@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import {
   Box,
@@ -30,17 +30,23 @@ function App() {
   );
   const [resolution, setResolution] = useState<?Resolution>(null);
 
-  window.addEventListener('popstate', (event) => {
-    if (event.state) {
-      setURL(event.state.url);
-      setResolution(event.state.resolution);
-      // @todo handle page navigation before fetch completion
-    } else {
-      // null state of the full page load
-      setURL('');
-      setResolution(null);
-    }
-  });
+  useEffect(() => {
+    const handler = (event) => {
+      if (event.state) {
+        setURL(event.state.url); // @todo restore value in URL input after navigation
+        setResolution(event.state.resolution);
+        // @todo handle page navigation before fetch completion
+      } else {
+        // null state of the full page load
+        setURL('');
+        setResolution(null);
+      }
+    };
+    window.addEventListener('popstate', handler);
+    return () => {
+      window.removeEventListener('popstate', handler);
+    };
+  }, []);
 
   return (
     <div className="App">
