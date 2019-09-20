@@ -32,13 +32,12 @@ function App() {
 
   useEffect(() => {
     const handler = (event) => {
+      setURL(new URL(window.location.href).searchParams.get('url') || '');
       if (event.state) {
-        setURL(event.state.url);
         setResolution(event.state.resolution);
         // @todo handle page navigation before fetch completion
       } else {
         // null state of the full page load
-        setURL(new URL(window.location.href).searchParams.get('url') || '');
         setResolution(null);
       }
     };
@@ -69,7 +68,7 @@ function App() {
               navigationURL.searchParams.delete('url');
               navigationURL.searchParams.append('url', url);
               window.history.pushState(
-                { url },
+                {},
                 document.title,
                 navigationURL.toString(),
               );
@@ -90,7 +89,7 @@ function App() {
                 setNetwork('success');
 
                 window.history.replaceState(
-                  { url, resolution },
+                  { resolution },
                   document.title,
                   navigationURL.toString(),
                 );
