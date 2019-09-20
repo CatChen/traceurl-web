@@ -50,6 +50,8 @@ function App() {
   }, []);
 
   const trace = async (event) => {
+    // @todo don't trace empty string or invalid URL
+    // @todo cancel previous trace when starting new trace
     setNetwork('working');
 
     try {
