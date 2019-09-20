@@ -33,12 +33,12 @@ function App() {
   useEffect(() => {
     const handler = (event) => {
       if (event.state) {
-        setURL(event.state.url); // @todo restore value in URL input after navigation
+        setURL(event.state.url);
         setResolution(event.state.resolution);
         // @todo handle page navigation before fetch completion
       } else {
         // null state of the full page load
-        setURL('');
+        setURL(new URL(window.location.href).searchParams.get('url') || '');
         setResolution(null);
       }
     };
@@ -101,7 +101,7 @@ function App() {
           >
             <TextField
               autoFocus={true}
-              defaultValue={url}
+              value={url}
               fullWidth={true}
               label="URL"
               name="url"
