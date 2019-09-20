@@ -142,10 +142,9 @@ function App() {
                       rel="noreferrer"
                       color="primary"
                     >
-                      Open
-                      {/*
-                        @todo add spacing between text and icon
-                      */}
+                      <Box mr={1} component="span">
+                        Open
+                      </Box>
                       <OpenInNew />
                     </Button>
                   </CardActions>
