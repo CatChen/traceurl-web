@@ -32,13 +32,12 @@ function App() {
 
   useEffect(() => {
     const handler = (event) => {
+      setURL(new URL(window.location.href).searchParams.get('url') || '');
       if (event.state) {
-        setURL(event.state.url); // @todo restore value in URL input after navigation
         setResolution(event.state.resolution);
         // @todo handle page navigation before fetch completion
       } else {
         // null state of the full page load
-        setURL('');
         setResolution(null);
       }
     };
@@ -69,7 +68,7 @@ function App() {
               navigationURL.searchParams.delete('url');
               navigationURL.searchParams.append('url', url);
               window.history.pushState(
-                { url },
+                {},
                 document.title,
                 navigationURL.toString(),
               );
@@ -90,7 +89,7 @@ function App() {
                 setNetwork('success');
 
                 window.history.replaceState(
-                  { url, resolution },
+                  { resolution },
                   document.title,
                   navigationURL.toString(),
                 );
@@ -101,7 +100,7 @@ function App() {
           >
             <TextField
               autoFocus={true}
-              defaultValue={url}
+              value={url}
               fullWidth={true}
               label="URL"
               name="url"
