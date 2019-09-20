@@ -14,6 +14,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import OpenInNew from '@material-ui/icons/OpenInNew';
+import Refresh from '@material-ui/icons/Refresh';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 type NetworkState = 'unknown' | 'working' | 'success' | 'failure';
 type Resolution = { url: string } | { urls: Array<string> };
@@ -47,6 +49,113 @@ function App() {
     };
   }, []);
 
+  const trace = async (event) => {
+    setNetwork('working');
+
+    try {
+      // @todo move development config outside of component
+      const origin =
+        process.env.NODE_ENV === 'production'
+          ? PRODUCTION_ORIGIN
+          : DEVELOPMENT_ORIGIN;
+      const api = new URL(origin);
+      api.pathname = RESOLVE_ENDPOINT;
+      api.searchParams.append('url', url);
+
+      const response = await fetch(api);
+      const resolution = await response.json();
+      setResolution(resolution);
+      setNetwork('success');
+
+      window.history.replaceState({ resolution }, document.title);
+    } catch {
+      setNetwork('failure');
+    }
+  };
+
+  let result;
+  switch (network) {
+    case 'working':
+      result = (
+        <Card>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              <Skeleton width="30%" style={{ margin: 0 }} />
+            </Typography>
+            <Box fontFamily="Monospace" style={{ overflowWrap: 'break-word' }}>
+              <Skeleton />
+              <Skeleton />
+              <Skeleton width="60%" style={{ margin: 0 }} />
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button>
+              <Skeleton width={90} height={24} style={{ margin: 0 }} />
+            </Button>
+          </CardActions>
+        </Card>
+      );
+      break;
+    case 'success':
+      if (resolution) {
+        if (typeof resolution.url === 'string') {
+          result = (
+            <Card>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Result
+                </Typography>
+                <Box
+                  fontFamily="Monospace"
+                  style={{ overflowWrap: 'break-word' }}
+                >
+                  {resolution.url}
+                </Box>
+              </CardContent>
+              <CardActions>
+                <Button
+                  href={resolution.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  color="primary"
+                >
+                  <Box mr={1} component="span">
+                    Open
+                  </Box>
+                  <OpenInNew />
+                </Button>
+              </CardActions>
+            </Card>
+          );
+        } else {
+        }
+      }
+      break;
+    case 'failure':
+      result = (
+        <Card>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              Failure
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button color="secondary" onClick={trace}>
+              <Box mr={1} component="span">
+                Retry
+              </Box>
+              <Refresh />
+            </Button>
+          </CardActions>
+        </Card>
+      );
+      break;
+    case 'unknown':
+    default:
+      result = null;
+      break;
+  }
+
   return (
     <div className="App">
       <CssBaseline>
@@ -73,29 +182,7 @@ function App() {
                 navigationURL.toString(),
               );
 
-              setNetwork('working');
-              try {
-                const origin =
-                  process.env.NODE_ENV === 'production'
-                    ? PRODUCTION_ORIGIN
-                    : DEVELOPMENT_ORIGIN;
-                const api = new URL(origin);
-                api.pathname = RESOLVE_ENDPOINT;
-                api.searchParams.append('url', url);
-
-                const response = await fetch(api);
-                const resolution = await response.json();
-                setResolution(resolution);
-                setNetwork('success');
-
-                window.history.replaceState(
-                  { resolution },
-                  document.title,
-                  navigationURL.toString(),
-                );
-              } catch {
-                setNetwork('failure');
-              }
+              await trace();
             }}
           >
             <TextField
@@ -120,38 +207,7 @@ function App() {
               Trace
             </Button>
           </form>
-          {resolution ? (
-            typeof resolution.url === 'string' ? (
-              <Box my={2}>
-                <Card>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Resolved URL
-                    </Typography>
-                    <Box
-                      fontFamily="Monospace"
-                      style={{ overflowWrap: 'break-word' }}
-                    >
-                      {resolution.url}
-                    </Box>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      href={resolution.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      color="primary"
-                    >
-                      <Box mr={1} component="span">
-                        Open
-                      </Box>
-                      <OpenInNew />
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Box>
-            ) : null
-          ) : null}
+          <Box my={2}>{result}</Box>
         </Container>
       </CssBaseline>
     </div>
