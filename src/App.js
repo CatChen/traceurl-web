@@ -47,7 +47,6 @@ function App() {
   }, []);
 
   const trace = async (event) => {
-    // @todo don't trace empty string or invalid URL
     // @todo cancel previous trace when starting new trace
     setNetwork('working');
 
@@ -172,6 +171,20 @@ function App() {
 
               const navigationURL = new URL(window.location.href);
               navigationURL.searchParams.delete('url');
+
+              try {
+                new URL(url);
+              } catch {
+                // empty or invalid URL
+                setNetwork('empty');
+                window.history.pushState(
+                  {},
+                  document.title,
+                  navigationURL.toString(),
+                );
+                return;
+              }
+
               navigationURL.searchParams.append('url', url);
               window.history.pushState(
                 {},
