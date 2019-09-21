@@ -10,6 +10,7 @@ import {
   CardContent,
   Container,
   CssBaseline,
+  Link,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -169,7 +170,11 @@ function App() {
           </Box>
           <Typography fontWeight="fontWeightLight">
             This tool helps you expand shortened URL into original URL or trace
-            any URL with redirections towards the destionation.
+            any URL with redirections towards the destionation. It's{' '}
+            <Link href="https://github.com/CatChen/traceurl-web/">
+              open source
+            </Link>
+            .
           </Typography>
           <form
             onSubmit={async (event) => {
