@@ -16,14 +16,10 @@ import {
 import OpenInNew from '@material-ui/icons/OpenInNew';
 import Refresh from '@material-ui/icons/Refresh';
 import Skeleton from '@material-ui/lab/Skeleton';
+import API from './API.js';
 
 type NetworkState = 'unknown' | 'working' | 'success' | 'failure';
 type Resolution = { url: string } | { urls: Array<string> };
-
-const PRODUCTION_ORIGIN = 'https://traceurl.herokuapp.com';
-const DEVELOPMENT_ORIGIN =
-  process.env.REACT_APP_API_ORIGIN || 'http://localhost:4000';
-const RESOLVE_ENDPOINT = '/resolve.json';
 
 function App() {
   const [network, setNetwork] = useState<NetworkState>('unknown'); // @todo show network indicator when fetching
@@ -55,13 +51,7 @@ function App() {
     setNetwork('working');
 
     try {
-      // @todo move development config outside of component
-      const origin =
-        process.env.NODE_ENV === 'production'
-          ? PRODUCTION_ORIGIN
-          : DEVELOPMENT_ORIGIN;
-      const api = new URL(origin);
-      api.pathname = RESOLVE_ENDPOINT;
+      const api = new URL(API.RESOLVE_ENDPOINT);
       api.searchParams.append('url', url);
 
       const response = await fetch(api);
