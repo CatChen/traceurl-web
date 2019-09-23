@@ -2,7 +2,7 @@ pull_request_rules:
   - name: automatic merge for owner pull requests
     conditions:
       - author=CatChen
-      - "status-failure!=LGTM analysis: JavaScript"
+      - "status-success=LGTM analysis: JavaScript"
       - status-success=netlify/traceurl/deploy-preview
       - status-success=security/gitguardian
     actions:
@@ -12,7 +12,7 @@ pull_request_rules:
   - name: automatic merge for Dependabot pull requests
     conditions:
       - author=dependabot-preview[bot]
-      - "status-failure!=LGTM analysis: JavaScript"
+      - "status-success=LGTM analysis: JavaScript"
       - status-success=netlify/traceurl/deploy-preview
       - status-success=security/gitguardian
     actions:
