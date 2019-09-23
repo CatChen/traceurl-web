@@ -1,4 +1,4 @@
-// @flow
+// @flow strictg
 
 import React, { useEffect, useState } from 'react';
 import './App.css';
@@ -176,7 +176,7 @@ function App() {
                 new URL(url);
               } catch {
                 // empty or invalid URL
-                setNetwork('empty');
+                setNetwork('unknown');
                 window.history.pushState(
                   {},
                   document.title,
