@@ -1,6 +1,6 @@
 // @flow strictg
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import {
   Box,
@@ -28,15 +28,17 @@ function App() {
     new URL(window.location.href).searchParams.get('url') || '',
   );
   const [resolution, setResolution] = useState<?Resolution>(null);
+  const [requestID, setRequestID] = useState<string>('');
 
   useEffect(() => {
     const handler = (event) => {
       setURL(new URL(window.location.href).searchParams.get('url') || '');
       if (event.state) {
+        setRequestID(event.state.requestID);
         setResolution(event.state.resolution);
-        // @todo handle page navigation before fetch completion
       } else {
         // null state of the full page load
+        setRequestID('');
         setResolution(null);
       }
     };
@@ -46,9 +48,16 @@ function App() {
     };
   }, []);
 
+  const requestIDElement = useRef(null);
+
   const trace = async (event) => {
-    // @todo cancel previous trace when starting new trace
+    const thisRequestID = Math.floor(Math.random() * Math.pow(36, 8)).toString(
+      36,
+    );
+
     setNetwork('working');
+    setRequestID(thisRequestID);
+    window.history.replaceState({ requestID: thisRequestID }, document.title);
 
     try {
       const api = new URL(API.RESOLVE_ENDPOINT);
@@ -56,10 +65,19 @@ function App() {
 
       const response = await fetch(api);
       const resolution = await response.json();
-      setResolution(resolution);
-      setNetwork('success');
 
-      window.history.replaceState({ resolution }, document.title);
+      if (
+        requestIDElement.current &&
+        requestIDElement.current.value === thisRequestID
+      ) {
+        // discord response if it's not for the current request
+        setResolution(resolution);
+        setNetwork('success');
+        window.history.replaceState(
+          { requestID: thisRequestID, resolution },
+          document.title,
+        );
+      }
     } catch {
       setNetwork('failure');
     }
@@ -195,6 +213,7 @@ function App() {
               await trace();
             }}
           >
+            <input ref={requestIDElement} value={requestID} type="hidden" />
             <TextField
               autoFocus={true}
               value={url}
