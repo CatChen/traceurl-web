@@ -20,6 +20,7 @@
   ],
   "start_url": ".",
   "display": "standalone",
+  "scope": "/",
   "theme_color": "#fafafa",
   "background_color": "#fafafa"
 }
