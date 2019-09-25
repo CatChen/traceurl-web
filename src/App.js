@@ -19,11 +19,11 @@ import Refresh from '@material-ui/icons/Refresh';
 import Skeleton from '@material-ui/lab/Skeleton';
 import API from './API.js';
 
-type NetworkState = 'unknown' | 'working' | 'success' | 'failure';
+type NetworkState = 'none' | 'working' | 'success' | 'failure';
 type Resolution = { url: string } | { urls: Array<string> };
 
 function App() {
-  const [network, setNetwork] = useState<NetworkState>('unknown'); // @todo show network indicator when fetching
+  const [network, setNetwork] = useState<NetworkState>('none'); // @todo show network indicator when fetching
   const [url, setURL] = useState<string>(
     new URL(window.location.href).searchParams.get('url') || '',
   );
@@ -160,7 +160,7 @@ function App() {
         </Card>
       );
       break;
-    case 'unknown':
+    case 'none':
     default:
       result = null;
       break;
@@ -194,7 +194,7 @@ function App() {
                 new URL(url);
               } catch {
                 // empty or invalid URL
-                setNetwork('unknown');
+                setNetwork('none');
                 window.history.pushState(
                   {},
                   document.title,
