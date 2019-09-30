@@ -7,7 +7,7 @@
     "@material-ui/icons": "^4.4.3",
     "@material-ui/lab": "^4.0.0-alpha.27",
     "flow-bin": "^0.108.0",
-    "react": "^16.9.0",
+    "react": "^16.10.1",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.2",
     "typeface-roboto": "^0.0.75"
