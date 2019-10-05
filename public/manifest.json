@@ -18,6 +18,14 @@
       "sizes": "512x512"
     }
   ],
+  "share_target": {
+    "action": "/",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
   "start_url": ".",
   "display": "standalone",
   "scope": "/",
