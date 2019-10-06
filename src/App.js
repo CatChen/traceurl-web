@@ -1,4 +1,4 @@
-// @flow strictg
+// @flow strict
 
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
@@ -22,17 +22,35 @@ import API from './API.js';
 type NetworkState = 'none' | 'working' | 'success' | 'failure';
 type Resolution = { url: string } | { urls: Array<string> };
 
+function extractURL(): string {
+  const locationURL = new URL(window.location.href);
+  const urlParam = locationURL.searchParams.get('url');
+  const textParam = locationURL.searchParams.get('text');
+  let maybeURL = '';
+  if (urlParam) {
+    try {
+      new URL(urlParam);
+      maybeURL = urlParam;
+    } catch {}
+  }
+  if (maybeURL === '' && textParam) {
+    try {
+      new URL(textParam);
+      maybeURL = textParam;
+    } catch {}
+  }
+  return maybeURL;
+}
+
 function App() {
   const [network, setNetwork] = useState<NetworkState>('none'); // @todo show network indicator when fetching
-  const [url, setURL] = useState<string>(
-    new URL(window.location.href).searchParams.get('url') || '',
-  );
+  const [url, setURL] = useState<string>(extractURL());
   const [resolution, setResolution] = useState<?Resolution>(null);
   const [requestID, setRequestID] = useState<string>('');
 
   useEffect(() => {
     const handler = (event) => {
-      setURL(new URL(window.location.href).searchParams.get('url') || '');
+      setURL(extractURL());
       if (event.state) {
         setRequestID(event.state.requestID);
         setResolution(event.state.resolution);
