@@ -43,7 +43,7 @@ function extractURL(): string {
 }
 
 function App() {
-  const [network, setNetwork] = useState<NetworkState>('none'); // @todo show network indicator when fetching
+  const [network, setNetwork] = useState<NetworkState>('none');
   const [url, setURL] = useState<string>(extractURL());
   const [resolution, setResolution] = useState<?Resolution>(null);
   const [requestID, setRequestID] = useState<string>('');
@@ -61,6 +61,11 @@ function App() {
       }
     };
     window.addEventListener('popstate', handler);
+
+    const initialURL = extractURL();
+    if (initialURL !== '') {
+      trace(initialURL); // no await -- fire and forget
+    }
     return () => {
       window.removeEventListener('popstate', handler);
     };
@@ -68,7 +73,7 @@ function App() {
 
   const requestIDElement = useRef(null);
 
-  const trace = async (event) => {
+  const trace = async (url: string): Promise<void> => {
     const thisRequestID = Math.floor(Math.random() * Math.pow(36, 8)).toString(
       36,
     );
@@ -168,7 +173,12 @@ function App() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button color="secondary" onClick={trace}>
+            <Button
+              color="secondary"
+              onClick={(event) => {
+                trace(url);
+              }}
+            >
               <Box mr={1} component="span">
                 Retry
               </Box>
@@ -228,7 +238,7 @@ function App() {
                 navigationURL.toString(),
               );
 
-              await trace();
+              await trace(url);
             }}
           >
             <input ref={requestIDElement} value={requestID} type="hidden" />
