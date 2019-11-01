@@ -54,6 +54,8 @@ function App() {
     });
 
     const handler = (event) => {
+      window.gtag('event', 'history.popstate');
+
       setURL(extractURL());
       if (event.state) {
         setRequestID(event.state.requestID);
@@ -171,6 +173,9 @@ function App() {
                   target="_blank"
                   rel="noreferrer"
                   color="primary"
+                  onclick={(event) => {
+                    window.gtag('event', 'link.click');
+                  }}
                 >
                   <Box mr={1} component="span">
                     Open
@@ -196,6 +201,8 @@ function App() {
             <Button
               color="secondary"
               onClick={(event) => {
+                window.gtag('event', 'retry.click');
+
                 trace(url);
               }}
             >
