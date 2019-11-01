@@ -49,6 +49,10 @@ function App() {
   const [requestID, setRequestID] = useState<string>('');
 
   useEffect(() => {
+    window.gtag('event', 'app.mount', {
+      non_interaction: true,
+    });
+
     const handler = (event) => {
       setURL(extractURL());
       if (event.state) {
@@ -68,12 +72,20 @@ function App() {
     }
     return () => {
       window.removeEventListener('popstate', handler);
+
+      window.gtag('event', 'app.unmount', {
+        non_interaction: true,
+      });
     };
   }, []);
 
   const requestIDElement = useRef(null);
 
   const trace = async (url: string): Promise<void> => {
+    window.gtag('event', 'trace.start', {
+      non_interaction: true,
+    });
+
     const thisRequestID = Math.floor(Math.random() * Math.pow(36, 8)).toString(
       36,
     );
@@ -100,9 +112,17 @@ function App() {
           { requestID: thisRequestID, resolution },
           document.title,
         );
+
+        window.gtag('event', 'trace.succeed', {
+          non_interaction: true,
+        });
       }
     } catch {
       setNetwork('failure');
+
+      window.gtag('event', 'trace.fail', {
+        non_interaction: true,
+      });
     }
   };
 
@@ -213,6 +233,8 @@ function App() {
           </Typography>
           <form
             onSubmit={async (event) => {
+              window.gtag('event', 'form.submit');
+
               event.preventDefault();
 
               const navigationURL = new URL(window.location.href);
