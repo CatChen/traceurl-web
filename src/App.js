@@ -183,7 +183,10 @@ function App() {
                 <Button
                   color="primary"
                   onClick={async (event) => {
-                    window.gtag('event', 'link.copy');
+                    window.gtag('event', 'copy', {
+                      event_category: 'resolution',
+                      event_label: resolutionURL,
+                    });
                     await navigator.clipboard.writeText(resolutionURL);
                   }}
                 >
@@ -199,7 +202,8 @@ function App() {
                   color="primary"
                   onClick={(event) => {
                     window.gtag('event', 'click', {
-                      event_category: 'link',
+                      event_category: 'resolution',
+                      event_label: resolutionURL,
                     });
                   }}
                 >
