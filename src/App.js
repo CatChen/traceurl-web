@@ -157,7 +157,10 @@ function App() {
           </CardContent>
           <CardActions>
             <Button>
-              <Skeleton width={90} height={24} style={{ margin: 0 }} />
+              <Skeleton width={70} height={24} style={{ margin: 0 }} />
+            </Button>
+            <Button>
+              <Skeleton width={70} height={24} style={{ margin: 0 }} />
             </Button>
           </CardActions>
         </Card>
