@@ -153,7 +153,8 @@ function App() {
       break;
     case 'success':
       if (resolution) {
-        if (typeof resolution.url === 'string') {
+        const resolutionURL = resolution.url;
+        if (typeof resolutionURL === 'string') {
           result = (
             <Card>
               <CardContent>
@@ -164,16 +165,28 @@ function App() {
                   fontFamily="Monospace"
                   style={{ overflowWrap: 'break-word' }}
                 >
-                  {resolution.url}
+                  {resolutionURL}
                 </Box>
               </CardContent>
               <CardActions>
                 <Button
-                  href={resolution.url}
+                  color="primary"
+                  onClick={async (event) => {
+                    window.gtag('event', 'link.copy');
+                    await navigator.clipboard.writeText(resolutionURL);
+                  }}
+                >
+                  <Box mr={1} component="span">
+                    Copy
+                  </Box>
+                  <OpenInNew />
+                </Button>
+                <Button
+                  href={resolutionURL}
                   target="_blank"
                   rel="noreferrer"
                   color="primary"
-                  onclick={(event) => {
+                  onClick={(event) => {
                     window.gtag('event', 'link.click');
                   }}
                 >
