@@ -317,6 +317,10 @@ function App() {
             name="url"
             placeholder="Any URL that redirects"
             variant="filled"
+            inputProps={{
+              autocapitalize: 'none',
+              autocorrect: 'off',
+            }}
             margin="normal"
             onChange={(event) => {
               setURL(event.target.value);
