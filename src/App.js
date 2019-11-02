@@ -14,7 +14,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import OpenInNew from '@material-ui/icons/OpenInNew';
+import FileCopy from '@material-ui/icons/FileCopyOutlined';
+import OpenInNew from '@material-ui/icons/OpenInNewOutlined';
 import Refresh from '@material-ui/icons/Refresh';
 import Skeleton from '@material-ui/lab/Skeleton';
 import API from './API.js';
@@ -164,7 +165,8 @@ function App() {
       break;
     case 'success':
       if (resolution) {
-        if (typeof resolution.url === 'string') {
+        const resolutionURL = resolution.url;
+        if (typeof resolutionURL === 'string') {
           result = (
             <Card>
               <CardContent>
@@ -175,18 +177,34 @@ function App() {
                   fontFamily="Monospace"
                   style={{ overflowWrap: 'break-word' }}
                 >
-                  {resolution.url}
+                  {resolutionURL}
                 </Box>
               </CardContent>
               <CardActions>
                 <Button
-                  href={resolution.url}
+                  color="primary"
+                  onClick={async (event) => {
+                    window.gtag('event', 'copy', {
+                      event_category: 'resolution',
+                      event_label: resolutionURL,
+                    });
+                    await navigator.clipboard.writeText(resolutionURL);
+                  }}
+                >
+                  <Box mr={1} component="span">
+                    Copy
+                  </Box>
+                  <FileCopy />
+                </Button>
+                <Button
+                  href={resolutionURL}
                   target="_blank"
                   rel="noreferrer"
                   color="primary"
-                  onclick={(event) => {
+                  onClick={(event) => {
                     window.gtag('event', 'click', {
-                      event_category: 'link',
+                      event_category: 'resolution',
+                      event_label: resolutionURL,
                     });
                   }}
                 >
