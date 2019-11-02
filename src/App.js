@@ -232,7 +232,7 @@ function App() {
           </Box>
           <Typography fontWeight="fontWeightLight">
             This tool helps you expand shortened URL into original URL or trace
-            any URL with redirections towards the destionation. It's{' '}
+            any URL with redirections towards the destination. It's{' '}
             <Link href="https://github.com/CatChen/traceurl-web/">
               open source
             </Link>
