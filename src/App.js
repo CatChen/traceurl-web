@@ -223,79 +223,78 @@ function App() {
 
   return (
     <div className="App">
-      <CssBaseline>
-        <Container maxWidth="sm">
-          <Box textAlign="center" my={2}>
-            <Typography variant="h3" component="h1">
-              Trace URL
-            </Typography>
-          </Box>
-          <Typography fontWeight="fontWeightLight">
-            This tool helps you expand shortened URL into original URL or trace
-            any URL with redirections towards the destination. It's{' '}
-            <Link href="https://github.com/CatChen/traceurl-web/">
-              open source
-            </Link>
-            .
+      <CssBaseline />
+      <Container maxWidth="sm">
+        <Box textAlign="center" my={2}>
+          <Typography variant="h3" component="h1">
+            Trace URL
           </Typography>
-          <form
-            onSubmit={async (event) => {
-              window.gtag('event', 'form.submit');
+        </Box>
+        <Typography fontWeight="fontWeightLight">
+          This tool helps you expand shortened URL into original URL or trace
+          any URL with redirections towards the destination. It's{' '}
+          <Link href="https://github.com/CatChen/traceurl-web/">
+            open source
+          </Link>
+          .
+        </Typography>
+        <form
+          onSubmit={async (event) => {
+            window.gtag('event', 'form.submit');
 
-              event.preventDefault();
+            event.preventDefault();
 
-              const navigationURL = new URL(window.location.href);
-              navigationURL.searchParams.delete('url');
+            const navigationURL = new URL(window.location.href);
+            navigationURL.searchParams.delete('url');
 
-              try {
-                new URL(url);
-              } catch {
-                // empty or invalid URL
-                setNetwork('none');
-                window.history.pushState(
-                  {},
-                  document.title,
-                  navigationURL.toString(),
-                );
-                return;
-              }
-
-              navigationURL.searchParams.append('url', url);
+            try {
+              new URL(url);
+            } catch {
+              // empty or invalid URL
+              setNetwork('none');
               window.history.pushState(
                 {},
                 document.title,
                 navigationURL.toString(),
               );
+              return;
+            }
 
-              await trace(url);
+            navigationURL.searchParams.append('url', url);
+            window.history.pushState(
+              {},
+              document.title,
+              navigationURL.toString(),
+            );
+
+            await trace(url);
+          }}
+        >
+          <input ref={requestIDElement} value={requestID} type="hidden" />
+          <TextField
+            autoFocus={true}
+            value={url}
+            fullWidth={true}
+            label="URL"
+            name="url"
+            placeholder="Any URL that redirects"
+            variant="filled"
+            margin="normal"
+            onChange={(event) => {
+              setURL(event.target.value);
             }}
+          />
+          <Button
+            type="submit"
+            fullWidth={true}
+            variant="contained"
+            color="primary"
           >
-            <input ref={requestIDElement} value={requestID} type="hidden" />
-            <TextField
-              autoFocus={true}
-              value={url}
-              fullWidth={true}
-              label="URL"
-              name="url"
-              placeholder="Any URL that redirects"
-              variant="filled"
-              margin="normal"
-              onChange={(event) => {
-                setURL(event.target.value);
-              }}
-            />
-            <Button
-              type="submit"
-              fullWidth={true}
-              variant="contained"
-              color="primary"
-            >
-              Trace
-            </Button>
-          </form>
-          <Box my={2}>{result}</Box>
-        </Container>
-      </CssBaseline>
+            Trace
+          </Button>
+        </form>
+        <Box my={2}>{result}</Box>
+      </Container>
     </div>
   );
 }
