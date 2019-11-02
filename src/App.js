@@ -14,7 +14,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import OpenInNew from '@material-ui/icons/OpenInNew';
+import FileCopy from '@material-ui/icons/FileCopyOutlined';
+import OpenInNew from '@material-ui/icons/OpenInNewOutlined';
 import Refresh from '@material-ui/icons/Refresh';
 import Skeleton from '@material-ui/lab/Skeleton';
 import API from './API.js';
@@ -193,7 +194,7 @@ function App() {
                   <Box mr={1} component="span">
                     Copy
                   </Box>
-                  <OpenInNew />
+                  <FileCopy />
                 </Button>
                 <Button
                   href={resolutionURL}
