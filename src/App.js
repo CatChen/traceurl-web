@@ -191,7 +191,19 @@ function App() {
                       event_category: 'resolution',
                       event_label: resolutionURL,
                     });
-                    await navigator.clipboard.writeText(resolutionURL);
+                    if (navigator.clipboard) {
+                      await navigator.clipboard.writeText(resolutionURL);
+                    } else {
+                      const documentBody = document.body;
+                      if (documentBody !== null) {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = resolutionURL;
+                        documentBody.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        documentBody.removeChild(textarea);
+                      }
+                    }
                   }}
                 >
                   <Box mr={1} component="span">
