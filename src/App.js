@@ -49,12 +49,15 @@ function App() {
   const [requestID, setRequestID] = useState<string>('');
 
   useEffect(() => {
-    window.gtag('event', 'app.mount', {
+    window.gtag('event', 'mount', {
       non_interaction: true,
+      event_category: 'app',
     });
 
     const handler = (event) => {
-      window.gtag('event', 'history.popstate');
+      window.gtag('event', 'popstate', {
+        event_category: 'history',
+      });
 
       setURL(extractURL());
       if (event.state) {
@@ -75,8 +78,9 @@ function App() {
     return () => {
       window.removeEventListener('popstate', handler);
 
-      window.gtag('event', 'app.unmount', {
+      window.gtag('event', 'unmount', {
         non_interaction: true,
+        event_category: 'app',
       });
     };
   }, []);
@@ -84,8 +88,10 @@ function App() {
   const requestIDElement = useRef(null);
 
   const trace = async (url: string): Promise<void> => {
-    window.gtag('event', 'trace.start', {
+    window.gtag('event', 'start', {
       non_interaction: true,
+      event_category: 'trace',
+      event_label: url,
     });
 
     const thisRequestID = Math.floor(Math.random() * Math.pow(36, 8)).toString(
@@ -115,15 +121,20 @@ function App() {
           document.title,
         );
 
-        window.gtag('event', 'trace.succeed', {
+        window.gtag('event', 'succeed', {
           non_interaction: true,
+          event_category: 'trace',
+          event_label: url,
+          value: 1,
         });
       }
     } catch {
       setNetwork('failure');
 
-      window.gtag('event', 'trace.fail', {
+      window.gtag('event', 'fail', {
         non_interaction: true,
+        event_category: 'trace',
+        event_label: url,
       });
     }
   };
@@ -187,7 +198,9 @@ function App() {
                   rel="noreferrer"
                   color="primary"
                   onClick={(event) => {
-                    window.gtag('event', 'link.click');
+                    window.gtag('event', 'click', {
+                      event_category: 'link',
+                    });
                   }}
                 >
                   <Box mr={1} component="span">
@@ -214,7 +227,9 @@ function App() {
             <Button
               color="secondary"
               onClick={(event) => {
-                window.gtag('event', 'retry.click');
+                window.gtag('event', 'click', {
+                  event_category: 'retry',
+                });
 
                 trace(url);
               }}
@@ -253,7 +268,9 @@ function App() {
         </Typography>
         <form
           onSubmit={async (event) => {
-            window.gtag('event', 'form.submit');
+            window.gtag('event', 'submit', {
+              event_category: 'form',
+            });
 
             event.preventDefault();
 
