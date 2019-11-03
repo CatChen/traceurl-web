@@ -7,6 +7,20 @@ import 'typeface-roboto';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
+window.addEventListener('beforeinstallprompt', async (event) => {
+  const choiceResult = await event.userChoice();
+  window.gtag('event', 'app', {
+    event_category: 'prompt',
+    event_label: choiceResult.outcome,
+  });
+});
+
+window.addEventListener('appinstalled', (event) => {
+  window.gtag('event', 'app', {
+    event_category: 'install',
+  });
+});
+
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
