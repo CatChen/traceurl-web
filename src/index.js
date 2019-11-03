@@ -11,6 +11,7 @@ window.addEventListener('beforeinstallprompt', async (event) => {
   const choiceResult = await event.userChoice();
   window.gtag('event', 'app', {
     event_category: 'prompt',
+    non_interaction: true,
     event_label: choiceResult.outcome,
   });
 });
@@ -18,6 +19,7 @@ window.addEventListener('beforeinstallprompt', async (event) => {
 window.addEventListener('appinstalled', (event) => {
   window.gtag('event', 'app', {
     event_category: 'install',
+    value: 1,
   });
 });
 
