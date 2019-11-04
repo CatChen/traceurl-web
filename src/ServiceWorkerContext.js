@@ -75,40 +75,31 @@ export function withServiceWorkerContextProvider<Config: {}>(
             setWaitingServiceWorker(registration.waiting);
           }
 
-          registration.addEventListener('updatefound', () => {
-            const installingWorker = registration.installing;
-            if (installingWorker == null) {
-              return;
-            }
+          window.updateAvailable.then((registration) => {
+            console.log('service_worker', 'update_available');
+            Analytics.logEvent(
+              'service_worker',
+              'update_available',
+              null,
+              null,
+              false,
+            );
 
-            installingWorker.addEventListener('statechange', () => {
-              if (installingWorker.state === 'installed') {
-                if (serviceWorker.controller) {
-                  console.log('service_worker', 'update_available');
-                  Analytics.logEvent(
-                    'service_worker',
-                    'update_available',
-                    null,
-                    null,
-                    false,
-                  );
+            setUpdateAvailable(true);
+            setWaitingServiceWorker(registration.waiting);
+          });
 
-                  setUpdateAvailable(true);
-                  setWaitingServiceWorker(registration.waiting);
-                } else {
-                  console.log('service_worker', 'cache_complete');
-                  Analytics.logEvent(
-                    'service_worker',
-                    'cache_complete',
-                    null,
-                    null,
-                    false,
-                  );
+          window.cacheComplete.then((registration) => {
+            console.log('service_worker', 'cache_complete');
+            Analytics.logEvent(
+              'service_worker',
+              'cache_complete',
+              null,
+              null,
+              false,
+            );
 
-                  setCacheComplete(true);
-                }
-              }
-            });
+            setCacheComplete(true);
           });
         }
       })();
