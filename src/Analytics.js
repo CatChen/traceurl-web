@@ -11,8 +11,8 @@ const Analytics = {
   logEvent: (
     category: string,
     action: string,
-    label?: string,
-    value?: number,
+    label?: ?string,
+    value?: ?number,
     interaction?: boolean = true,
   ): void => {
     window.gtag('event', action, {
