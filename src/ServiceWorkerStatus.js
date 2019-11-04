@@ -15,8 +15,8 @@ function ServiceWorkerStatus() {
   const [open, setOpen] = useState(false);
   const context = useServiceWorkerContext();
 
-  if (context.updateAvailable) {
-    setOpen(true);
+  if (open !== context.updateAvailable) {
+    setOpen(context.updateAvailable);
   }
 
   return (
