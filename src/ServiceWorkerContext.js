@@ -62,6 +62,7 @@ export function withServiceWorkerContextProvider<Config: {}>(
           }
 
           if (registration.waiting) {
+            console.log('service_worker', 'update_available');
             Analytics.logEvent(
               'service_worker',
               'update_available',
@@ -83,6 +84,7 @@ export function withServiceWorkerContextProvider<Config: {}>(
             installingWorker.addEventListener('statechange', () => {
               if (installingWorker.state === 'installed') {
                 if (serviceWorker.controller) {
+                  console.log('service_worker', 'update_available');
                   Analytics.logEvent(
                     'service_worker',
                     'update_available',
@@ -94,6 +96,7 @@ export function withServiceWorkerContextProvider<Config: {}>(
                   setUpdateAvailable(true);
                   setWaitingServiceWorker(registration.waiting);
                 } else {
+                  console.log('service_worker', 'cache_complete');
                   Analytics.logEvent(
                     'service_worker',
                     'cache_complete',
