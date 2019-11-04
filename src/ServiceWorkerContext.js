@@ -29,18 +29,19 @@ export function withServiceWorkerContextProvider<Config: {}>(
     const [updateAvailable, setUpdateAvailable] = useState(false);
     const [cacheComplete, setCacheComplete] = useState(false);
     const [
-      waitingServiceWorker,
-      setWaitingServiceWorker,
-    ] = useState<?ServiceWorker>(null);
+      registration,
+      setRegistration,
+    ] = useState<?ServiceWorkerRegistration>(null);
 
     const value = useMemo(() => {
       return {
         updateAvailable,
         cacheComplete,
         applyUpdate: () => {
-          if (!waitingServiceWorker) {
+          if (!registration || !registration.waiting) {
             return;
           }
+          const waitingServiceWorker = registration.waiting;
           waitingServiceWorker.addEventListener('statechange', () => {
             if (waitingServiceWorker.state === 'activated') {
               window.location.reload();
@@ -50,7 +51,7 @@ export function withServiceWorkerContextProvider<Config: {}>(
           waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
         },
       };
-    }, [updateAvailable, cacheComplete, waitingServiceWorker]);
+    }, [updateAvailable, cacheComplete, registration]);
 
     useEffect(() => {
       (async () => {
@@ -60,6 +61,8 @@ export function withServiceWorkerContextProvider<Config: {}>(
           if (!registration) {
             return;
           }
+
+          setRegistration(registration);
 
           if (registration.waiting) {
             console.log('service_worker', 'update_available');
@@ -72,7 +75,6 @@ export function withServiceWorkerContextProvider<Config: {}>(
             );
 
             setUpdateAvailable(true);
-            setWaitingServiceWorker(registration.waiting);
           }
 
           window.updateAvailable.then((registration) => {
@@ -86,7 +88,6 @@ export function withServiceWorkerContextProvider<Config: {}>(
             );
 
             setUpdateAvailable(true);
-            setWaitingServiceWorker(registration.waiting);
           });
 
           window.cacheComplete.then((registration) => {
