@@ -21,7 +21,9 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import API from './API.js';
 
 type NetworkState = 'none' | 'working' | 'success' | 'failure';
-type Resolution = { url: string } | { urls: Array<string> };
+type Destination = {| url: string |};
+type Hops = {| urls: Array<string> |};
+type Resolution = Destination | Hops;
 
 function extractURL(): string {
   const locationURL = new URL(window.location.href);
@@ -168,8 +170,8 @@ function App() {
       break;
     case 'success':
       if (resolution) {
-        const resolutionURL = resolution.url;
-        if (typeof resolutionURL === 'string') {
+        if (typeof resolution.url === 'string') {
+          const resolutionURL = resolution.url;
           result = (
             <Card>
               <CardContent>
