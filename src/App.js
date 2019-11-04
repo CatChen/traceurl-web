@@ -16,9 +16,10 @@ import {
 } from '@material-ui/core';
 import FileCopy from '@material-ui/icons/FileCopyOutlined';
 import OpenInNew from '@material-ui/icons/OpenInNewOutlined';
-import Refresh from '@material-ui/icons/Refresh';
+import Refresh from '@material-ui/icons/RefreshOutlined';
 import Skeleton from '@material-ui/lab/Skeleton';
 import API from './API.js';
+import ServiceWorkerStatus from './ServiceWorkerStatus';
 
 type NetworkState = 'none' | 'working' | 'success' | 'failure';
 type Destination = {| url: string |};
@@ -272,7 +273,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div>
       <CssBaseline />
       <Container maxWidth="sm">
         <Box textAlign="center" my={2}>
@@ -350,6 +351,7 @@ function App() {
           </Button>
         </form>
         <Box my={2}>{result}</Box>
+        <ServiceWorkerStatus />
       </Container>
     </div>
   );
