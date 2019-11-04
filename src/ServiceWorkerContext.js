@@ -8,6 +8,7 @@ import React, {
   useState,
 } from 'react';
 import type { AbstractComponent } from 'react';
+import Analytics from './Analytics';
 
 type ServiceWorkerContextValue = {|
   updateAvailable: boolean,
@@ -69,9 +70,25 @@ export function withServiceWorkerContextProvider<Config: {}>(
             installingWorker.addEventListener('statechange', () => {
               if (installingWorker.state === 'installed') {
                 if (serviceWorker.controller) {
+                  Analytics.logEvent(
+                    'service_worker',
+                    'update_available',
+                    null,
+                    null,
+                    false,
+                  );
+
                   setUpdateAvailable(true);
                   setWaitingServiceWorker(registration.waiting);
                 } else {
+                  Analytics.logEvent(
+                    'service_worker',
+                    'cache_complete',
+                    null,
+                    null,
+                    false,
+                  );
+
                   setCacheComplete(true);
                 }
               }
