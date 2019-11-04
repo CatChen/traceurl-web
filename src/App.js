@@ -52,6 +52,13 @@ function App() {
   const [requestID, setRequestID] = useState<string>('');
 
   useEffect(() => {
+    if (!window.gtag) {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(...args) {
+        window.dataLayer.push(arguments);
+      };
+    }
+
     window.gtag('event', 'mount', {
       non_interaction: true,
       event_category: 'app',
@@ -332,8 +339,8 @@ function App() {
             placeholder="Any URL that redirects"
             variant="filled"
             inputProps={{
-              autocapitalize: 'none',
-              autocorrect: 'off',
+              autoCapitalize: 'none',
+              autoCorrect: 'off',
             }}
             margin="normal"
             onChange={(event) => {
