@@ -61,6 +61,19 @@ export function withServiceWorkerContextProvider<Config: {}>(
             return;
           }
 
+          if (registration.waiting) {
+            Analytics.logEvent(
+              'service_worker',
+              'update_available',
+              null,
+              null,
+              false,
+            );
+
+            setUpdateAvailable(true);
+            setWaitingServiceWorker(registration.waiting);
+          }
+
           registration.addEventListener('updatefound', () => {
             const installingWorker = registration.installing;
             if (installingWorker == null) {
