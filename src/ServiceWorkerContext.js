@@ -21,9 +21,9 @@ const ServiceWorkerContext = createContext<ServiceWorkerContextValue>({
   applyUpdate: () => {},
 });
 
-export function withServiceWorkerContextProvider<Config>(
+export function withServiceWorkerContextProvider<Config: {}>(
   Component: AbstractComponent<Config>,
-) {
+): AbstractComponent<Config> {
   return (props: Config) => {
     const [updateAvailable, setUpdateAvailable] = useState(false);
     const [cacheComplete, setCacheComplete] = useState(false);
@@ -40,8 +40,8 @@ export function withServiceWorkerContextProvider<Config>(
           if (!waitingServiceWorker) {
             return;
           }
-          waitingServiceWorker.addEventListener('statechange', (event) => {
-            if (event.target.state === 'activated') {
+          waitingServiceWorker.addEventListener('statechange', () => {
+            if (waitingServiceWorker.state === 'activated') {
               window.location.reload();
             }
           });
@@ -52,23 +52,23 @@ export function withServiceWorkerContextProvider<Config>(
     }, [updateAvailable, cacheComplete, waitingServiceWorker]);
 
     useEffect(() => {
-      if ('serviceWorker' in navigator) {
-        const serviceWorker = navigator.serviceWorker;
-        (async () => {
-          const registration = await serviceWorker.getRegistration();
+      (async () => {
+        if (navigator.serviceWorker) {
+          const serviceWorker = navigator.serviceWorker;
+          const registration = await serviceWorker.getRegistration('/');
           if (!registration) {
             return;
           }
 
-          registration.addEventListener('updatefound', (event) => {
+          registration.addEventListener('updatefound', () => {
             const installingWorker = registration.installing;
             if (installingWorker == null) {
               return;
             }
 
-            installingWorker.addEventListener('statechange', (event) => {
-              if (event.target.state === 'installed') {
-                if (navigator.serviceWorker.controller) {
+            installingWorker.addEventListener('statechange', () => {
+              if (installingWorker.state === 'installed') {
+                if (serviceWorker.controller) {
                   setUpdateAvailable(true);
                   setWaitingServiceWorker(registration.waiting);
                 } else {
@@ -77,9 +77,9 @@ export function withServiceWorkerContextProvider<Config>(
               }
             });
           });
-        })();
-        return () => {};
-      }
+        }
+      })();
+      return () => {};
     });
 
     return (
@@ -90,7 +90,7 @@ export function withServiceWorkerContextProvider<Config>(
   };
 }
 
-export function useServiceWorkerContext(): ServiceWorkerContext {
+export function useServiceWorkerContext(): ServiceWorkerContextValue {
   const context = useContext(ServiceWorkerContext);
   return context;
 }

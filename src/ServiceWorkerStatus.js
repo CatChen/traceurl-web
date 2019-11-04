@@ -8,6 +8,8 @@ import {
   useServiceWorkerContext,
 } from './ServiceWorkerContext';
 
+import type { ElementConfig } from 'react';
+
 function ServiceWorkerStatus() {
   const [open, setOpen] = useState(false);
   const context = useServiceWorkerContext();
@@ -37,4 +39,6 @@ function ServiceWorkerStatus() {
   );
 }
 
-export default withServiceWorkerContextProvider(ServiceWorkerStatus);
+export default withServiceWorkerContextProvider<ElementConfig<typeof Snackbar>>(
+  ServiceWorkerStatus,
+);
