@@ -18,7 +18,8 @@ import FileCopy from '@material-ui/icons/FileCopyOutlined';
 import OpenInNew from '@material-ui/icons/OpenInNewOutlined';
 import Refresh from '@material-ui/icons/RefreshOutlined';
 import Skeleton from '@material-ui/lab/Skeleton';
-import API from './API.js';
+import Analytics from './Analytics';
+import API from './API';
 import ServiceWorkerStatus from './ServiceWorkerStatus';
 
 type NetworkState = 'none' | 'working' | 'success' | 'failure';
@@ -53,22 +54,10 @@ function App() {
   const [requestID, setRequestID] = useState<string>('');
 
   useEffect(() => {
-    if (!window.gtag) {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function(...args) {
-        window.dataLayer.push(arguments);
-      };
-    }
-
-    window.gtag('event', 'mount', {
-      non_interaction: true,
-      event_category: 'app',
-    });
+    Analytics.logEvent('app', 'mount');
 
     const handler = (event) => {
-      window.gtag('event', 'popstate', {
-        event_category: 'history',
-      });
+      Analytics.logEvent('history', 'popstate');
 
       setURL(extractURL());
       if (event.state) {
@@ -89,21 +78,14 @@ function App() {
     return () => {
       window.removeEventListener('popstate', handler);
 
-      window.gtag('event', 'unmount', {
-        non_interaction: true,
-        event_category: 'app',
-      });
+      Analytics.logEvent('app', 'unmount');
     };
   }, []);
 
   const requestIDElement = useRef(null);
 
   const trace = async (url: string): Promise<void> => {
-    window.gtag('event', 'start', {
-      non_interaction: true,
-      event_category: 'trace',
-      event_label: url,
-    });
+    Analytics.logEvent('trace', 'start', url, null, false);
 
     const thisRequestID = Math.floor(Math.random() * Math.pow(36, 8)).toString(
       36,
@@ -132,21 +114,12 @@ function App() {
           document.title,
         );
 
-        window.gtag('event', 'succeed', {
-          non_interaction: true,
-          event_category: 'trace',
-          event_label: url,
-          value: 1,
-        });
+        Analytics.logEvent('trace', 'succeed', url, 1, false);
       }
     } catch {
       setNetwork('failure');
 
-      window.gtag('event', 'fail', {
-        non_interaction: true,
-        event_category: 'trace',
-        event_label: url,
-      });
+      Analytics.logEvent('trace', 'fail', url, null, false);
     }
   };
 
@@ -197,10 +170,7 @@ function App() {
                 <Button
                   color="primary"
                   onClick={async (event) => {
-                    window.gtag('event', 'copy', {
-                      event_category: 'resolution',
-                      event_label: resolutionURL,
-                    });
+                    Analytics.logEvent('resolution', 'copy');
                     if (navigator.clipboard) {
                       await navigator.clipboard.writeText(resolutionURL);
                     } else {
@@ -227,10 +197,7 @@ function App() {
                   rel="noreferrer"
                   color="primary"
                   onClick={(event) => {
-                    window.gtag('event', 'click', {
-                      event_category: 'resolution',
-                      event_label: resolutionURL,
-                    });
+                    Analytics.logEvent('resolution', 'open');
                   }}
                 >
                   <Box mr={1} component="span">
@@ -257,9 +224,7 @@ function App() {
             <Button
               color="secondary"
               onClick={(event) => {
-                window.gtag('event', 'click', {
-                  event_category: 'retry',
-                });
+                Analytics.logEvent('retry', 'click');
 
                 trace(url);
               }}
@@ -298,9 +263,7 @@ function App() {
         </Typography>
         <form
           onSubmit={async (event) => {
-            window.gtag('event', 'submit', {
-              event_category: 'form',
-            });
+            Analytics.logEvent('form', 'submit');
 
             event.preventDefault();
 
