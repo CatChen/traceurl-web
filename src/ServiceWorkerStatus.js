@@ -29,8 +29,6 @@ function ServiceWorkerStatus() {
         <IconButton
           color="inherit"
           onClick={(event) => {
-            Analytics.logEvent('service_worker', 'apply_update');
-
             context.applyUpdate();
           }}
         >

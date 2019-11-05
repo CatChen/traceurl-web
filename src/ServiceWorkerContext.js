@@ -38,12 +38,36 @@ export function withServiceWorkerContextProvider<Config: {}>(
         updateAvailable,
         cacheComplete,
         applyUpdate: () => {
+          Analytics.logEvent(
+            'service_worker_apply_update',
+            'start',
+            undefined,
+            undefined,
+            false,
+          );
+
           if (!registration || !registration.waiting) {
+            Analytics.logEvent(
+              'service_worker_apply_update',
+              'failure',
+              undefined,
+              undefined,
+              false,
+            );
+
             return;
           }
           const waitingServiceWorker = registration.waiting;
           waitingServiceWorker.addEventListener('statechange', () => {
             if (waitingServiceWorker.state === 'activated') {
+              Analytics.logEvent(
+                'service_worker_apply_update',
+                'success',
+                undefined,
+                undefined,
+                false,
+              );
+
               window.location.reload();
             }
           });
