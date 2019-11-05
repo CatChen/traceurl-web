@@ -31,7 +31,6 @@ function ServiceWorkerStatus() {
           onClick={(event) => {
             Analytics.logEvent('service_worker', 'apply_update');
 
-            setOpen(false);
             context.applyUpdate();
           }}
         >
