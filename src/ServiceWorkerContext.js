@@ -69,8 +69,8 @@ export function withServiceWorkerContextProvider<Config: {}>(
             Analytics.logEvent(
               'service_worker',
               'update_available',
-              null,
-              null,
+              undefined,
+              undefined,
               false,
             );
 
@@ -82,8 +82,8 @@ export function withServiceWorkerContextProvider<Config: {}>(
             Analytics.logEvent(
               'service_worker',
               'update_available',
-              null,
-              null,
+              undefined,
+              undefined,
               false,
             );
 
@@ -95,8 +95,8 @@ export function withServiceWorkerContextProvider<Config: {}>(
             Analytics.logEvent(
               'service_worker',
               'cache_complete',
-              null,
-              null,
+              undefined,
+              undefined,
               false,
             );
 

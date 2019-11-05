@@ -12,7 +12,7 @@ window.addEventListener('beforeinstallprompt', async (event) => {
 });
 
 window.addEventListener('appinstalled', (event) => {
-  Analytics.logEvent('app', 'install', null, 1);
+  Analytics.logEvent('app', 'install', undefined, 1);
 });
 
 let resolveUpdateAvailable;

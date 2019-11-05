@@ -85,7 +85,7 @@ function App() {
   const requestIDElement = useRef(null);
 
   const trace = async (url: string): Promise<void> => {
-    Analytics.logEvent('trace', 'start', url, null, false);
+    Analytics.logEvent('trace', 'start', url, undefined, false);
 
     const thisRequestID = Math.floor(Math.random() * Math.pow(36, 8)).toString(
       36,
@@ -119,7 +119,7 @@ function App() {
     } catch {
       setNetwork('failure');
 
-      Analytics.logEvent('trace', 'fail', url, null, false);
+      Analytics.logEvent('trace', 'fail', url, undefined, false);
     }
   };
 
