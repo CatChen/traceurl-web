@@ -105,7 +105,7 @@ export function withServiceWorkerContextProvider<Config: {}>(
         }
       })();
       return () => {};
-    });
+    }, []);
 
     return (
       <ServiceWorkerContext.Provider value={value}>
