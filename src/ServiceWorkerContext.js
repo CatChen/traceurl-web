@@ -78,31 +78,35 @@ export function withServiceWorkerContextProvider<Config: {}>(
     }, [updateAvailable, cacheComplete, registration]);
 
     useEffect(() => {
-      window.updateAvailable.then((registration) => {
-        console.log('service_worker', 'update_available');
-        Analytics.logEvent(
-          'service_worker',
-          'update_available',
-          undefined,
-          undefined,
-          false,
-        );
+      if (window.updateAvailable) {
+        window.updateAvailable.then((registration) => {
+          console.log('service_worker', 'update_available');
+          Analytics.logEvent(
+            'service_worker',
+            'update_available',
+            undefined,
+            undefined,
+            false,
+          );
 
-        setUpdateAvailable(true);
-      });
+          setUpdateAvailable(true);
+        });
+      }
 
-      window.cacheComplete.then((registration) => {
-        console.log('service_worker', 'cache_complete');
-        Analytics.logEvent(
-          'service_worker',
-          'cache_complete',
-          undefined,
-          undefined,
-          false,
-        );
+      if (window.cacheComplete) {
+        window.cacheComplete.then((registration) => {
+          console.log('service_worker', 'cache_complete');
+          Analytics.logEvent(
+            'service_worker',
+            'cache_complete',
+            undefined,
+            undefined,
+            false,
+          );
 
-        setCacheComplete(true);
-      });
+          setCacheComplete(true);
+        });
+      }
 
       (async () => {
         if (navigator.serviceWorker) {
