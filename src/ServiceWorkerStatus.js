@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { IconButton, Slide, Snackbar, Typography } from '@material-ui/core';
-import Update from '@material-ui/icons/UpdateOutlined';
+import SystemUpdate from '@material-ui/icons/SystemUpdateOutlined';
 import Analytics from './Analytics';
 import {
   withServiceWorkerContextProvider,
@@ -29,12 +29,12 @@ function ServiceWorkerStatus() {
         <IconButton
           color="inherit"
           onClick={(event) => {
-            Analytics.logEvent('service_worker', 'apply_update');
+            Analytics.logEvent('update', 'click');
 
             context.applyUpdate();
           }}
         >
-          <Update />
+          <SystemUpdate />
         </IconButton>
       }
     />
