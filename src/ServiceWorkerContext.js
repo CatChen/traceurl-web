@@ -78,6 +78,32 @@ export function withServiceWorkerContextProvider<Config: {}>(
     }, [updateAvailable, cacheComplete, registration]);
 
     useEffect(() => {
+      window.updateAvailable.then((registration) => {
+        console.log('service_worker', 'update_available');
+        Analytics.logEvent(
+          'service_worker',
+          'update_available',
+          undefined,
+          undefined,
+          false,
+        );
+
+        setUpdateAvailable(true);
+      });
+
+      window.cacheComplete.then((registration) => {
+        console.log('service_worker', 'cache_complete');
+        Analytics.logEvent(
+          'service_worker',
+          'cache_complete',
+          undefined,
+          undefined,
+          false,
+        );
+
+        setCacheComplete(true);
+      });
+
       (async () => {
         if (navigator.serviceWorker) {
           const serviceWorker = navigator.serviceWorker;
@@ -100,35 +126,8 @@ export function withServiceWorkerContextProvider<Config: {}>(
 
             setUpdateAvailable(true);
           }
-
-          window.updateAvailable.then((registration) => {
-            console.log('service_worker', 'update_available');
-            Analytics.logEvent(
-              'service_worker',
-              'update_available',
-              undefined,
-              undefined,
-              false,
-            );
-
-            setUpdateAvailable(true);
-          });
-
-          window.cacheComplete.then((registration) => {
-            console.log('service_worker', 'cache_complete');
-            Analytics.logEvent(
-              'service_worker',
-              'cache_complete',
-              undefined,
-              undefined,
-              false,
-            );
-
-            setCacheComplete(true);
-          });
         }
       })();
-      return () => {};
     }, []);
 
     return (
