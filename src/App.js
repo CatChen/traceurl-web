@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import FileCopy from '@material-ui/icons/FileCopyOutlined';
+import ShareNew from '@material-ui/icons/ShareOutlined';
 import OpenInNew from '@material-ui/icons/OpenInNewOutlined';
 import Refresh from '@material-ui/icons/RefreshOutlined';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -191,6 +192,24 @@ function App() {
                   </Box>
                   <FileCopy />
                 </Button>
+                {'share' in navigator ? (
+                  <Button
+                    color="primary"
+                    onClick={async (event) => {
+                      Analytics.logEvent('resolution', 'share');
+                      if (navigator.share) {
+                        navigator.share({
+                          url: resolutionURL,
+                        });
+                      }
+                    }}
+                  >
+                    <Box mr={1} component="span">
+                      Share
+                    </Box>
+                    <ShareNew />
+                  </Button>
+                ) : null}
                 <Button
                   href={resolutionURL}
                   target="_blank"
