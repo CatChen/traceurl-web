@@ -2,7 +2,7 @@
 
 const PRODUCTION_ORIGIN = 'https://traceurl.herokuapp.com';
 const DEVELOPMENT_ORIGIN =
-  process.env.REACT_APP_API_ORIGIN || 'http://localhost:4000';
+  process.env.REACT_APP_API_ORIGIN || `http://${window.location.hostname}:4000`;
 const RESOLVE_ENDPOINT = '/resolve.json';
 
 const origin =
