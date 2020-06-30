@@ -44,7 +44,7 @@
     ]
   },
   "devDependencies": {
-    "flow-bin": "^0.127.0",
+    "flow-bin": "^0.128.0",
     "husky": "^4.2.5",
     "prettier": "2.0.5",
     "pretty-quick": "^2.0.1"
