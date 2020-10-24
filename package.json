@@ -8,7 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "4.0.0",
     "typeface-roboto": "^1.1.13"
   },
   "scripts": {
