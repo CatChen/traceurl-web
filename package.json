@@ -47,6 +47,6 @@
     "flow-bin": "^0.133.0",
     "husky": "^6.0.0",
     "prettier": "2.3.1",
-    "pretty-quick": "^3.1.0"
+    "pretty-quick": "^3.1.1"
   }
 }
