@@ -1,0 +1,17 @@
+version: 2
+registries:
+  npm-registry-npm-pkg-github-com-catchen:
+    type: npm-registry
+    url: https://npm.pkg.github.com/CatChen
+    token: "${{GITHUB_TOKEN}}"
+
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+    timezone: US/Pacific
+  open-pull-requests-limit: 10
+  registries:
+  - npm-registry-npm-pkg-github-com-catchen
