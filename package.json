@@ -16,7 +16,8 @@
     "build": "react-scripts build",
     "flow": "flow",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "prettier": {
     "singleQuote": true,
@@ -25,11 +26,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   },
   "browserslist": {
     "production": [
@@ -45,7 +41,7 @@
   },
   "devDependencies": {
     "flow-bin": "^0.156.0",
-    "husky": "^6.0.0",
+    "husky": "^7.0.0",
     "prettier": "2.3.1",
     "pretty-quick": "^3.1.3"
   }
