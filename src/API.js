@@ -10,7 +10,7 @@ const origin =
     ? PRODUCTION_ORIGIN
     : DEVELOPMENT_ORIGIN;
 
-const API = {};
+const API: { RESOLVE_ENDPOINT: string } = {};
 Object.defineProperties(API, {
   RESOLVE_ENDPOINT: {
     value: origin + RESOLVE_ENDPOINT,

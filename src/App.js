@@ -48,7 +48,7 @@ function extractURL(): string {
   return maybeURL;
 }
 
-function App() {
+function App(): React$Element<'div'> {
   const [network, setNetwork] = useState<NetworkState>('none');
   const [url, setURL] = useState<string>(extractURL());
   const [resolution, setResolution] = useState<?Resolution>(null);
