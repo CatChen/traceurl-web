@@ -13,6 +13,7 @@ updates:
     time: "03:00"
     timezone: US/Pacific
   open-pull-requests-limit: 10
-  assignees: "catchen"
+  assignees:
+    - "catchen"
   registries:
   - npm-registry-npm-pkg-github-com-catchen
