@@ -10,7 +10,7 @@ import {
   useServiceWorkerContext,
 } from './ServiceWorkerContext';
 
-import type { ElementConfig } from 'react';
+import type { AbstractComponent, ElementConfig } from 'react';
 
 function ServiceWorkerStatus() {
   return (
@@ -77,6 +77,6 @@ function ServiceWorkerCacheStatus() {
   );
 }
 
-export default withServiceWorkerContextProvider<
+export default (withServiceWorkerContextProvider<
   ElementConfig<typeof React.Fragment>,
->(ServiceWorkerStatus);
+>(ServiceWorkerStatus): AbstractComponent<ElementConfig<React$FragmentType>>);
